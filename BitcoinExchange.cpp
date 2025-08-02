@@ -33,7 +33,7 @@ BitcoinExchange::BitcoinExchange(const std::string& dbFile)
     std::getline(file, line); // skip header
     while (std::getline(file, line)) 
     {
-        std::stringstream ss(line);
+        std::stringstream ss(line); // Crea un stream a partir de la línea.
         std::string date, valueStr;
         if (!std::getline(ss, date, ',') || !std::getline(ss, valueStr))
             continue;
@@ -43,7 +43,8 @@ BitcoinExchange::BitcoinExchange(const std::string& dbFile)
 }
 
 // Devuelve el rate de la fecha más cercana anterior
-float BitcoinExchange::getClosestRate(const std::string& date) const {
+float BitcoinExchange::getClosestRate(const std::string& date) const 
+{
     std::map<std::string, float>::const_iterator it = _prices.lower_bound(date);
     if (it == _prices.end() || it->first != date) 
     {

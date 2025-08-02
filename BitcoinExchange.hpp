@@ -17,10 +17,11 @@ public:
     ~BitcoinExchange();                                     // Destructor
 
     // Constructor con archivo
-    BitcoinExchange(const std::string& dbFile);
+    BitcoinExchange(const std::string& file);
 
     // Métodos principales
     float getClosestRate(const std::string& date) const;
+    //validadores
     static bool isValidDate(const std::string& date);
     static bool isValidValue(const std::string& valueStr, float& value);
 };
