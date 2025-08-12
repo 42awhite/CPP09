@@ -34,12 +34,12 @@ int main(int argc, char** argv)
             continue;
         }
 
-        date = date.erase(date.find_last_not_of(" \t") + 1);
-        valueStr = valueStr.substr(valueStr.find_first_not_of(" \t"));
+        date = date.erase(date.find_last_not_of(" \t") + 1); //Borrar espacios del final
+        valueStr = valueStr.substr(valueStr.find_first_not_of(" \t")); //borrar espacios del principio
 
         if (!BitcoinExchange::isValidDate(date)) 
         {
-            std::cerr << "Error: bad input => " << line << std::endl;
+            std::cerr << "Error: invalid date => " << line << std::endl;
             continue;
         }
 

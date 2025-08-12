@@ -1,0 +1,156 @@
+Capítulo II – Reglas generales
+Compilación
+Compila tu código con c++ y las flags -Wall -Wextra -Werror.
+
+Tu código debe seguir compilando si añades la flag -std=c++98.
+
+Formato y convenciones de nombres
+Los directorios de los ejercicios se llamarán así: ex00, ex01, …, exn.
+
+Nombra tus archivos, clases, funciones, funciones miembro y atributos como lo indiquen las guías.
+
+Escribe los nombres de las clases en formato UpperCamelCase.
+
+Los archivos que contengan código de clase se nombrarán según el nombre de la clase. Ejemplo:
+
+ClassName.hpp / ClassName.h, ClassName.cpp, o ClassName.tpp
+
+Si tienes una clase BrickWall, sus archivos se llamarían BrickWall.hpp y BrickWall.cpp.
+
+Salvo que se indique lo contrario, cada mensaje de salida debe terminar con un salto de línea (\n) y mostrarse en la salida estándar.
+
+No hay norma de estilo obligatoria como en la Norminette, pero tu código debe ser legible para que pueda ser evaluado.
+
+Permitido / Prohibido
+No estás programando en C, sino en C++. Puedes usar casi todo de la librería estándar de C++.
+
+Debes usar versiones de C++ de las funciones que conoces de C cuando sea posible.
+
+Prohibido usar bibliotecas externas, C++11 o superior, Boost, y funciones como printf(), malloc(), calloc(), realloc() y free().
+Si las usas, nota directa: 0 puntos.
+
+Prohibido usar using namespace <ns_name> y friend salvo que se indique lo contrario. Si lo haces, -42 puntos.
+
+El uso de STL (containers, algoritmos) está permitido solo en Módulos 08 y 09.
+Antes de eso, no puedes usar vector, list, map, etc.
+
+Evita fugas de memoria: si usas new, debes liberar la memoria.
+
+Desde el Módulo 02 hasta el 09, las clases deben estar en Forma Canónica Ortodoxa salvo que se diga lo contrario.
+
+No se permite implementar funciones directamente en el .hpp (excepto plantillas).
+
+Cada .hpp debe incluir todas sus dependencias y tener include guards para evitar inclusión doble.
+
+Otras notas
+Puedes añadir archivos extra si lo necesitas para dividir tu código.
+
+Algunas instrucciones no escritas pueden aparecer en los ejemplos, así que léelos.
+
+Lee el módulo completo antes de empezar.
+
+El Makefile debe seguir las mismas reglas que en C (nombre del binario en $(NAME), reglas all, clean, fclean, re, sin relinks).
+
+Capítulo III – Reglas específicas del módulo
+Es obligatorio usar contenedores estándar para cada ejercicio del módulo.
+
+Una vez que uses un contenedor en un ejercicio, no puedes volver a usarlo en el resto del módulo.
+
+Debes usar al menos un contenedor en cada ejercicio, salvo en el ex02 que requiere dos contenedores.
+
+Capítulo IV – Ejercicio 00: Bitcoin Exchange
+Archivos a entregar:
+
+Makefile
+
+main.cpp
+
+BitcoinExchange.cpp
+
+BitcoinExchange.hpp
+
+Funciones prohibidas: Ninguna.
+
+Descripción:
+Crear un programa que muestre el valor de una cierta cantidad de bitcoins en una fecha determinada.
+El programa usará una base de datos en formato CSV con el historial de precios de bitcoin (se proporciona con el subject).
+El programa también recibe un segundo archivo de entrada con fechas y cantidades para evaluar.
+
+Reglas
+El programa se llamará btc.
+
+Recibe un archivo como argumento.
+
+Cada línea del archivo de entrada debe tener formato:
+
+nginx
+Copiar
+Editar
+fecha | valor
+Fecha válida: formato Año-Mes-Día (YYYY-MM-DD).
+
+Valor válido: número entero positivo o flotante entre 0 y 1000.
+
+Requisitos
+Usar al menos un contenedor para almacenar datos.
+
+Manejar errores con mensajes apropiados.
+
+Si la fecha del input no está en la base de datos, usar la fecha más cercana anterior (no la posterior).
+
+Ejemplo de archivo de entrada (input.txt)
+yaml
+Copiar
+Editar
+date | value
+2011-01-03 | 3
+2011-01-03 | 2
+2011-01-03 | 1
+2011-01-03 | 1.2
+2011-01-09 | 1
+2012-01-11 | -1
+2001-42-42
+2012-01-11 | 1
+2012-01-11 | 2147483648
+Ejemplo de uso
+yaml
+Copiar
+Editar
+$ ./btc
+Error: could not open file.
+
+$ ./btc input.txt
+2011-01-03 => 3 = 0.9
+2011-01-03 => 2 = 0.6
+2011-01-03 => 1 = 0.3
+2011-01-03 => 1.2 = 0.36
+2011-01-09 => 1 = 0.32
+Error: not a positive number.
+Error: bad input => 2001-42-42
+2012-01-11 => 1 = 7.1
+Error: too large a number.
+⚠️ Nota importante:
+El contenedor que uses en este ejercicio no podrás volver a usarlo en los ejercicios siguientes del módulo.
+
+📌 Resumen práctico
+Compilas con c++ -Wall -Wextra -Werror -std=c++98.
+
+No printf, malloc, free, ni using namespace std;.
+
+Usa STL containers (por ejemplo std::map) en este ejercicio, pero no podrás reutilizarlo en otros.
+
+El programa lee un archivo de entrada con fechas y valores, y multiplica el valor por el precio del bitcoin en esa fecha (o la más cercana anterior si no existe).
+
+Maneja errores:
+
+Archivo no encontrado.
+
+Formato de fecha inválido.
+
+Número negativo.
+
+Número demasiado grande.
+
+Formato de línea incorrecto.
+
+Salida: fecha => valor = resultado.

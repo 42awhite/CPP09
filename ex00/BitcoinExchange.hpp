@@ -3,6 +3,11 @@
 
 #include <string>
 #include <map>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <cstdlib>
+#include <iomanip>
 
 class BitcoinExchange 
 {

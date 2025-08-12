@@ -1,9 +1,4 @@
 #include "BitcoinExchange.hpp"
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <cstdlib>
-#include <iomanip>
 
 // Canonical Form
 BitcoinExchange::BitcoinExchange() {}
@@ -19,13 +14,12 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 
 BitcoinExchange::~BitcoinExchange() {}
 
-// Constructor con archivo CSV
 BitcoinExchange::BitcoinExchange(const std::string& dbFile) 
 {
-    std::ifstream file(dbFile.c_str());
+    std::ifstream file(dbFile.c_str()); //Prepara el archivo para lectura. 
     if (!file.is_open()) 
     {
-        std::cerr << "Error: could not open database file." << std::endl;
+        std::cerr << "Error: could not open file." << std::endl;
         return;
     }
 
@@ -33,11 +27,11 @@ BitcoinExchange::BitcoinExchange(const std::string& dbFile)
     std::getline(file, line); // skip header
     while (std::getline(file, line)) 
     {
-        std::stringstream ss(line); // Crea un stream a partir de la línea.
+        std::stringstream ss(line); // Crea un string a partir de la línea.
         std::string date, valueStr;
         if (!std::getline(ss, date, ',') || !std::getline(ss, valueStr))
             continue;
-        float value = std::strtof(valueStr.c_str(), NULL);
+        float value = std::strtof(valueStr.c_str(), NULL); //convierte de string a float
         _prices[date] = value;
     }
 }
@@ -49,7 +43,10 @@ float BitcoinExchange::getClosestRate(const std::string& date) const
     if (it == _prices.end() || it->first != date) 
     {
         if (it == _prices.begin())
+        {
+            std::cout << "Error: There is no valid value for the date" << date << std::endl;
             return 0.0f;
+        }
         --it;
     }
     return it->second;
@@ -61,7 +58,10 @@ bool BitcoinExchange::isValidDate(const std::string& date)
     if (date.size() != 10 || date[4] != '-' || date[7] != '-')
         return false;
     int y, m, d;
-    if (sscanf(date.c_str(), "%d-%d-%d", &y, &m, &d) != 3)
+    std::istringstream yss(date.substr(0, 4));
+    std::istringstream mss(date.substr(5, 2));
+    std::istringstream dss(date.substr(8, 2));
+    if (!(yss >> y) || !(mss >> m) || !(dss >> d))
         return false;
     return (y >= 2009 && m >= 1 && m <= 12 && d >= 1 && d <= 31);
 }
