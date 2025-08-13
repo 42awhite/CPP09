@@ -1,0 +1,69 @@
+Capítulo V
+Ejercicio 01: Notación Polaca Inversa
+Ejercicio: 01
+RPN
+
+Directorio de entrega: ex01/
+Archivos a entregar: Makefile, main.cpp, RPN.{cpp, hpp}
+Funciones prohibidas: Ninguna
+
+Debes crear un programa con las siguientes restricciones:
+
+El nombre del programa es RPN.
+
+Tu programa debe recibir como argumento una expresión matemática en notación polaca inversa (RPN = Reverse Polish Notation).
+
+Los números usados en esta operación y pasados como argumentos siempre serán menores que 10. (Esta regla no se aplica al cálculo o al resultado, solo a los números de entrada).
+
+Tu programa debe procesar esta expresión y mostrar el resultado correcto en la salida estándar.
+
+Si ocurre un error durante la ejecución, debe mostrarse un mensaje de error en la salida de error estándar.
+
+Tu programa debe poder manejar operaciones con estos operadores: " + - / * ".
+
+Debes usar al menos un contenedor en tu código para validar el ejercicio.
+
+No es necesario manejar paréntesis ni números decimales.
+
+Ejemplos de uso:
+
+
+$> ./RPN "8 9 * 9 - 9 - 9 - 4 - 1 +"
+42
+$> ./RPN "7 7 * 7 -"
+42
+$> ./RPN "1 2 * 2 / 2 * 2 4 - +"
+0
+$> ./RPN "(1 + 1)"
+Error
+$>
+⚠ Advertencia: El/los contenedor(es) que hayas usado en el ejercicio anterior están prohibidos aquí. El/los contenedor(es) que uses para validar este ejercicio no podrán usarse en el resto del módulo.
+
+Resumen práctico
+Objetivo: Recibir un string con una expresión en notación polaca inversa y calcular su resultado.
+
+Entrada: Números < 10 y operadores + - * /, separados por espacios.
+
+Salida: El resultado o un mensaje de error.
+
+Errores:
+
+Expresión inválida (operadores/números mal colocados o insuficientes).
+
+Caracteres no válidos (ej. paréntesis).
+
+División por 0.
+
+Contenedor: No puedes usar el mismo del ejercicio anterior. En este tipo de problema es típico usar std::stack<int>.
+
+Normas C++98: Nada de auto, lambdas, inicialización de lista {}, etc. Solo sintaxis antigua.
+
+Lógica típica:
+
+Recorrer cada token (número u operador).
+
+Si es número → meter en la pila.
+
+Si es operador → sacar dos elementos de la pila, operar y volver a meter el resultado.
+
+Al final debe quedar solo un número en la pila → ese es el resultado.
