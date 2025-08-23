@@ -1,7 +1,8 @@
 #include "PmergeMe.hpp"
 
 int main(int argc, char** argv) {
-    try {
+    try
+    {
         PmergeMe sorter;
         sorter.loadInput(argc, argv);
         sorter.displayBefore();
@@ -9,7 +10,8 @@ int main(int argc, char** argv) {
         sorter.displayAfter();
         sorter.displayTimes();
     }
-    catch (const std::exception& e) {
+    catch (const std::exception& e)
+    {
         std::cerr << e.what() << std::endl;
         return 1;
     }

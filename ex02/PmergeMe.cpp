@@ -4,13 +4,12 @@
 PmergeMe::PmergeMe() : _timeVec(0), _timeDeq(0)
 {}
 
-// Copy constructor
 PmergeMe::PmergeMe(const PmergeMe& other)
     : _vec(other._vec), _deq(other._deq), _timeVec(other._timeVec), _timeDeq(other._timeDeq)
 {}
 
-// Assignment operator
-PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
+PmergeMe& PmergeMe::operator=(const PmergeMe& other)
+{
     if (this != &other) {
         _vec = other._vec;
         _deq = other._deq;
@@ -27,7 +26,6 @@ PmergeMe::~PmergeMe()
 CHULETA FUNCIONES VECTORES:
     *push_back -> Añade un elemento al final de un contenedor: [5, 10] -> [5, 10, 42]
 */
-
 //Funciones
 void PmergeMe::loadInput(int argc, char** argv)
 {
@@ -81,7 +79,7 @@ void PmergeMe::sortAndMeasure()
     start_vec = clock();
     fordJohnsonVector(_vec);
     end_vec = clock();
-    _timeVec = (double)(end_vec - start_vec) / CLOCKS_PER_SEC * 1e6;
+    _timeVec = (double)(end_vec - start_vec) / CLOCKS_PER_SEC * 1e6; //microsegundo
     //Deque
     start_deq = clock();
     fordJohnsonDeque(_deq);
@@ -91,24 +89,31 @@ void PmergeMe::sortAndMeasure()
 
 // Implementación de Ford–Johnson
 
-void binaryInsert(std::vector<int>& vec, int value, int start, int end) {
-    int low = start;
+void binaryInsert(std::vector<int>& vec, int value, int end) 
+{
+    int low = 0;
     int high = end;
+    //Reduce progresivamente rango low y high por mitades hasta que encuentra sitio para posicionar
     while (low < high) 
     {
         int mid = (low + high) / 2;
+        //Si el valor vec es menor que value, se tiene que insertar aquí o a la derecha
         if (vec[mid] < value)
-            low = mid + 1;
+            low = mid + 1; //Buscar en la mitad derecha
+        // Puede ser que haya que insertarlo a la izquierda o en mid
         else
-            high = mid;
+            high = mid; //busca hasta la mitad.
     }
+    //Insertamos en la posición inicial + low
     vec.insert(vec.begin() + low, value);
 }
 
-void binaryInsert(std::deque<int>& deq, int value, int start, int end) {
-    int low = start;
+void binaryInsert(std::deque<int>& deq, int value, int end)
+{
+    int low = 0;
     int high = end;
-    while (low < high) {
+    while (low < high) 
+    {
         int mid = (low + high) / 2;
         if (deq[mid] < value)
             low = mid + 1;
@@ -120,17 +125,19 @@ void binaryInsert(std::deque<int>& deq, int value, int start, int end) {
 
 void PmergeMe::fordJohnsonVector(std::vector<int>& vec)
 {
+    //Si el vector bigger que recibe es == 1 se dejará de llamar recursivamente.
     if (vec.size() <= 1)
         return;
 
-    std::vector<int> bigger; // Larger elements of pairs
-    std::vector<int> smaller; // Smaller elements of pairs
+    std::vector<int> bigger; // lista de los números mayores
+    std::vector<int> smaller; // lista de los números menores
 
     //Formar pares
     size_t i = 0;
-    for (; i + 1 < vec.size(); i += 2) //Puede ser un while?
+    //Se repite mientras haya un par de elementos
+    while (i + 1 < vec.size())
     {
-        if (vec[i] < vec[i + 1]) 
+        if (vec[i] < vec[i + 1])
         {
             smaller.push_back(vec[i]);
             bigger.push_back(vec[i + 1]);
@@ -140,21 +147,18 @@ void PmergeMe::fordJohnsonVector(std::vector<int>& vec)
             smaller.push_back(vec[i + 1]);
             bigger.push_back(vec[i]);
         }
+        i += 2;
     }
-    if (i < vec.size()) 
-    {
-        // Odd element left, add to bigger
+    //Procesa el último elemento de impares:
+    if (i < vec.size())
         bigger.push_back(vec[i]);
-    }
-    // Recursively sort bigger array
+    // Ordena recursivamente el cluster bigger
     fordJohnsonVector(bigger);
-
-    // Start with bigger array as base
+    // Sobreescribir vec original con bigger ordenado
     vec = bigger;
-
-    // Insert smaller elements using binary insertion
+    // Inserta en vec la lista de los elementos pequeños ordenadamente
     for (size_t j = 0; j < smaller.size(); ++j) 
-        binaryInsert(vec, smaller[j], 0, vec.size());
+        binaryInsert(vec, smaller[j], vec.size());
 }
 
 void PmergeMe::fordJohnsonDeque(std::deque<int>& deq)
@@ -163,27 +167,25 @@ void PmergeMe::fordJohnsonDeque(std::deque<int>& deq)
         return;
     std::deque<int> bigger;
     std::deque<int> smaller;
-    
     size_t i = 0;
-    for (; i + 1 < deq.size(); i += 2) {
-        if (deq[i] < deq[i + 1]) {
+    while (i + 1 < deq.size()) 
+    {
+        if (deq[i] < deq[i + 1]) 
+        {
             smaller.push_back(deq[i]);
             bigger.push_back(deq[i + 1]);
-        } else {
+        } 
+        else 
+        {
             smaller.push_back(deq[i + 1]);
             bigger.push_back(deq[i]);
         }
+        i += 2;
     }
-    if (i < deq.size()) {
+    if (i < deq.size())
         bigger.push_back(deq[i]);
-    }
-    // Recursively sort bigger array
     fordJohnsonDeque(bigger);
-
     deq = bigger;
-
-    // Insert smaller elements
-    for (size_t j = 0; j < smaller.size(); ++j) {
-        binaryInsert(deq, smaller[j], 0, deq.size());
-    }
+    for (size_t j = 0; j < smaller.size(); ++j)
+        binaryInsert(deq, smaller[j], deq.size());
 }
