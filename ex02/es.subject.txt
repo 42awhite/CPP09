@@ -1,0 +1,101 @@
+Traducción literal
+
+Capítulo VI
+Ejercicio 02: PmergeMe
+
+Directorio de entrega: ex02/
+
+Archivos a entregar: Makefile, main.cpp, PmergeMe.{cpp,hpp}
+
+Funciones prohibidas: Ninguna
+
+Debes crear un programa con estas restricciones:
+
+El nombre del programa es PmergeMe.
+
+Tu programa debe poder usar como argumento una secuencia de enteros positivos.
+
+Tu programa debe usar el algoritmo merge-insert sort para ordenar la secuencia de enteros positivos.
+
+Para aclarar: sí, necesitas usar el algoritmo Ford–Johnson.
+(Fuente: Art of Computer Programming, Vol. 3. Merge Insertion, página 184)
+
+Si ocurre un error durante la ejecución, se debe mostrar un mensaje de error en la salida estándar de error.
+
+Debes usar al menos dos contenedores diferentes en tu código para validar este ejercicio.
+
+Tu programa debe poder manejar al menos 3000 enteros diferentes.
+
+Es muy recomendable implementar tu algoritmo para cada contenedor y así evitar usar una función genérica.
+
+Salida estándar: Debes mostrar esta información línea por línea:
+
+Primera línea: texto explícito seguido de la secuencia sin ordenar.
+
+Segunda línea: texto explícito seguido de la secuencia ordenada.
+
+Tercera línea: mensaje indicando el tiempo tomado por tu algoritmo, especificando el primer contenedor usado.
+
+Última línea: mensaje indicando el tiempo tomado por tu algoritmo, especificando el segundo contenedor usado.
+
+El formato del tiempo es libre, pero la precisión debe permitir ver claramente la diferencia entre los dos contenedores.
+
+Ejemplo de uso:
+
+$> ./PmergeMe 3 5 9 7 4
+Before: 3 5 9 7 4
+After: 3 4 5 7 9
+Time to process a range of 5 elements with std::[..] : 0.00031 us
+Time to process a range of 5 elements with std::[..] : 0.00014 us
+
+$> ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`
+Before: 141 79 526 321 [...]
+After: 79 141 321 526 [...]
+Time to process a range of 3000 elements with std::[..] : 62.14389 us
+Time to process a range of 3000 elements with std::[..] : 69.27212 us
+
+$> ./PmergeMe "-1" "2"
+Error
+
+# Para usuarios de OSX:
+$> ./PmergeMe `jot -r 3000 1 100000 | tr '\n' ' '`
+[...]
+
+
+La indicación del tiempo en el ejemplo es deliberadamente rara.
+Debes indicar el tiempo usado para realizar todas tus operaciones, incluyendo la parte de ordenamiento y la de gestión de datos.
+
+⚠ Advertencia: los contenedores usados en ejercicios anteriores están prohibidos aquí.
+La gestión de errores por duplicados queda a tu elección.
+
+Resumen práctico
+
+Programa PmergeMe → entrada: lista de enteros positivos como argumentos.
+
+Ordenar usando Ford–Johnson merge-insertion sort.
+
+Usar dos contenedores diferentes (ej. std::vector y std::deque) → implementar el algoritmo por separado para cada uno.
+
+Capaz de manejar ≥3000 enteros.
+
+Mostrar:
+
+Before: secuencia original.
+
+After: secuencia ordenada.
+
+Tiempo usando el contenedor 1.
+
+Tiempo usando el contenedor 2.
+
+Error si:
+
+Números negativos,
+
+No enteros,
+
+(Opcional) duplicados.
+
+Contenedores de ejercicios anteriores prohibidos.
+
+Medir tiempo incluyendo carga de datos y ordenamiento.
