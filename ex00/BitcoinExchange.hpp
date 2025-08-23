@@ -25,6 +25,7 @@ public:
     BitcoinExchange(const std::string& file);
 
     // Métodos principales
+    void processInputFile(const std::string& filename) const;
     float getClosestRate(const std::string& date) const;
     //validadores
     static bool isValidDate(const std::string& date);

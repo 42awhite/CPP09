@@ -36,6 +36,49 @@ BitcoinExchange::BitcoinExchange(const std::string& dbFile)
     }
 }
 
+// En BitcoinExchange.cpp (implementación)
+void BitcoinExchange::processInputFile(const std::string& filename) const
+{
+    std::ifstream input(filename.c_str());
+    if (!input.is_open())
+    {
+        std::cerr << "Error: could not open file." << std::endl;
+        return;
+    }
+    std::string line;
+    std::getline(input, line); // saltar encabezado
+
+    while (std::getline(input, line))
+    {
+        std::stringstream ss(line);
+        std::string date, valueStr;
+        if (!std::getline(ss, date, '|') || !std::getline(ss, valueStr))
+        {
+            std::cerr << "Error: bad input => " << line << std::endl;
+            continue;
+        }
+        date = date.erase(date.find_last_not_of(" \t") + 1);
+        valueStr = valueStr.substr(valueStr.find_first_not_of(" \t"));
+        if (!BitcoinExchange::isValidDate(date))
+        {
+            std::cerr << "Error: invalid date => " << line << std::endl;
+            continue;
+        }
+        float value;
+        if (!BitcoinExchange::isValidValue(valueStr, value))
+        {
+            if (value < 0)
+                std::cerr << "Error: not a positive number." << std::endl;
+            else
+                std::cerr << "Error: too large a number." << std::endl;
+            continue;
+        }
+        float rate = getClosestRate(date);
+        std::cout << date << " => " << value << " = " << value * rate << std::endl;
+    }
+}
+
+
 // Devuelve el rate de la fecha más cercana anterior
 float BitcoinExchange::getClosestRate(const std::string& date) const 
 {
